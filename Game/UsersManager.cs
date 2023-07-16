@@ -75,5 +75,10 @@ namespace TTT.Server.Game
 
             return true;
         }
+
+        internal int[] GetOtherConnectionIds(int connectionID)
+        {
+            return connections.Keys.Where(x => x !=  connectionID).ToArray();
+        }
     }
 }

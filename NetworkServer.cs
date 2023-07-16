@@ -1,4 +1,5 @@
 ﻿using LiteNetLib;
+using LiteNetLib.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NetworkShared;
@@ -21,6 +22,7 @@ namespace TTT.Server
 
         private readonly ILogger<NetworkServer> logger;
         private readonly IServiceProvider serviceProvider;
+        private readonly NetDataWriter cachedWriter = new NetDataWriter();
         private UsersManager usersManager;
 
         public NetworkServer(ILogger<NetworkServer> logger, IServiceProvider provider)
@@ -128,6 +130,19 @@ namespace TTT.Server
             var packet = (INetPacket)Activator.CreateInstance(type);
             packet.Deserialize(reader);
             return packet;
+        }
+
+        public void SendClient(int peerID, INetPacket packet, DeliveryMethod method = DeliveryMethod.ReliableOrdered)
+        {
+            var peer = usersManager.GetConnection(peerID).Peer;
+            peer.Send(WriteSerializeable(packet), method);
+        }
+
+        private NetDataWriter WriteSerializeable(INetPacket packet)
+        {
+            cachedWriter.Reset();
+            packet.Serialize(cachedWriter);
+            return cachedWriter;
         }
     }
 }
