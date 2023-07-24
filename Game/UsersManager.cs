@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TTT.Server.Data;
+using TTT.Server.NetworkShared.Packets.ServerClient;
 
 namespace TTT.Server.Game
 {
@@ -17,7 +18,17 @@ namespace TTT.Server.Game
         {
             this.userRepository = userRepository;
         }
-
+        public PlayerNetDto[] GetTopPlayers()
+        {
+            return userRepository.GetQuery().OrderByDescending(x => x.Score).Select(x => new PlayerNetDto()
+            {
+                Username = x.Id,
+                Score = x.Score,
+                IsOnlie = x.IsOnline
+            })
+            .Take(10)
+            .ToArray();
+        }
         public void AddConnection(NetPeer peer)
         {
             connections.Add(peer.Id, new ServerConnection()
@@ -80,5 +91,6 @@ namespace TTT.Server.Game
         {
             return connections.Keys.Where(x => x !=  connectionID).ToArray();
         }
+
     }
 }

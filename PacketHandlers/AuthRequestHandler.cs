@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TTT.Server.Data;
 using TTT.Server.Game;
 using TTT.Server.NetworkShared;
 using TTT.Server.NetworkShared.Attributes;
@@ -20,15 +21,18 @@ namespace TTT.Server.PacketHandlers
         private readonly ILogger<AuthRequestHandler> logger;
         private readonly UsersManager usersManager;
         private readonly NetworkServer server;
+        private readonly IUserRepository userRepository;
 
         public AuthRequestHandler(
             ILogger<AuthRequestHandler> logger,
             UsersManager usersManager,
-            NetworkServer server)
+            NetworkServer server,
+            IUserRepository userRepository)
         {
             this.logger = logger;
             this.usersManager = usersManager;
             this.server = server;
+            this.userRepository = userRepository;
         }
         public void Handle(INetPacket packet, int connectionID)
         {
@@ -59,8 +63,11 @@ namespace TTT.Server.PacketHandlers
 
         private void NotifyOtherPlayers(int connectionID)
         {
-            var response = new NetOnServerStatus();
-
+            var response = new NetOnServerStatus()
+            {
+                PlayersCount = userRepository.GetTotalCount(),
+                TopPlayers = usersManager.GetTopPlayers()
+            };
             var AllID = usersManager.GetOtherConnectionIds(connectionID);
             
             foreach (var otherPlayers in AllID)
