@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TTT.Server.NetworkShared.Packets.ClientServer
 {
-    public struct NetFindOpponent : INetPacket
+    public struct NetFindOpponentRequest : INetPacket
     {
         public PacketType Type => PacketType.FindOpponentRequest;
 

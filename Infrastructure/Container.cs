@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TTT.Server.Data;
 using TTT.Server.Extensions;
 using TTT.Server.Game;
+using TTT.Server.Matchmaking;
 using TTT.Server.NetworkShared.Registries;
 
 namespace TTT.Server.Infrastructure
@@ -30,6 +31,8 @@ namespace TTT.Server.Infrastructure
             services.AddSingleton<PacketRegistry>();
             services.AddSingleton<HandlerRegistry>();
             services.AddSingleton<UsersManager>();
+            services.AddSingleton<Matchmaker>();
+            services.AddSingleton<GameManager>();
             services.AddSingleton<IUserRepository, InMemoryUserRepository>();
             services.AddPacketHandlers();
         }
