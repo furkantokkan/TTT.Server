@@ -46,7 +46,10 @@ namespace TTT.Server.PacketHandlers
 
             if (loginRecord)
             {
-                responseMessage = new NetOnAuth();
+                responseMessage = new NetOnAuth()
+                {
+                    username = msg.Username
+                };
             }
             else
             {
