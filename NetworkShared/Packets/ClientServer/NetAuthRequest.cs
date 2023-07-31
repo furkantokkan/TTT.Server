@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Networkshared.Packets.ClientServer
 {
-    public class NetAuthRequest : INetPacket
+    public struct NetAuthRequest : INetPacket
     {
         public PacketType Type => PacketType.AuthRequest;
 

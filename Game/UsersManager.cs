@@ -55,6 +55,10 @@ namespace TTT.Server.Game
         {
             return connections[peerID];
         }
+        public ServerConnection GetConnection(string userID)
+        {
+            return connections.FirstOrDefault(x => x.Value.User.Id == userID).Value;
+        }
         public bool LoginOrRegister(int connectionID, string username, string password)
         {
             var dbUser = userRepository.Get(username);
