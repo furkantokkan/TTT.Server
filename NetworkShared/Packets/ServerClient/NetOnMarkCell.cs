@@ -9,9 +9,9 @@ using TTT.Server.NetworkShared.Models;
 
 namespace TTT.Server.NetworkShared.Packets.ServerClient
 {
-    public class NetOnMarkCell : INetPacket
+    public struct NetOnMarkCell : INetPacket
     {
-        public PacketType Type => PacketType.OnFindOpponent;
+        public PacketType Type => PacketType.OnMarkCell;
 
         public string Actor { get; set; }
 

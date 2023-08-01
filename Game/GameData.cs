@@ -59,6 +59,24 @@ namespace TTT.Server
                 return players[0].Player;
             }
         }
+        public void SwitchCurrentPlayer()
+        {
+            CurrentUser = GetOpponent(CurrentUser);
+        }
+
+        public void AddWin(string winnerUserID)
+        {
+            var winnerType = GetPlayerType(winnerUserID);
+            if (winnerType == MarkType.X)
+            {
+                players[0].PlayerWins++;
+            }
+            else
+            {
+                players[1].PlayerWins++;
+            }
+        }
+
 
         #region CheckForWin
         public MarkResult MarkCell(byte index)

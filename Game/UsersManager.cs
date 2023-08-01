@@ -51,6 +51,12 @@ namespace TTT.Server.Game
 
             connections.Remove(peerID);
         }
+        public void IncreaseScore(string userID)
+        {
+            var user = userRepository.Get(userID);
+            user.Score += 10;
+            userRepository.Update(user);
+        }
         public ServerConnection GetConnection(int peerID)
         {
             return connections[peerID];

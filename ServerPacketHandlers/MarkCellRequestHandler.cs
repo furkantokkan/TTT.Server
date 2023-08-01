@@ -1,4 +1,5 @@
-﻿using NetworkShared;
+﻿using Microsoft.Extensions.Logging;
+using NetworkShared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using TTT.Server.Game;
 using TTT.Server.NetworkShared;
 using TTT.Server.NetworkShared.Attributes;
+using TTT.Server.NetworkShared.Models;
 using TTT.Server.NetworkShared.Packets.ClientServer;
 using TTT.Server.NetworkShared.Packets.ServerClient;
 using TTT.Server.Utilities;
@@ -19,14 +21,17 @@ namespace TTT.Server.ServerPacketHandlers
         private readonly UsersManager usersManager;
         private readonly GameManager gameManager;
         private readonly NetworkServer server;
+        private readonly ILogger logger;
 
         public MarkCellRequestHandler(UsersManager usersManager, 
             GameManager gameManager,
-            NetworkServer server)
+            NetworkServer server,
+            ILogger<MarkCellRequestHandler> logger)
         {
             this.usersManager = usersManager;
             this.gameManager = gameManager;
             this.server = server;
+            this.logger = logger;
         }
         public void Handle(INetPacket packet, int connectionID)
         {
@@ -52,6 +57,22 @@ namespace TTT.Server.ServerPacketHandlers
 
             server.SendClient(connection.ConnectionID, response);
             server.SendClient(opponentConnection.ConnectionID, response);
+
+            logger.LogInformation($"{userID} marked cell at index {msg.Index}");
+
+            if (result.Outcome == MarkOutcome.None)
+            {
+                game.SwitchCurrentPlayer();
+                return;
+            }
+
+            if (result.Outcome == MarkOutcome.Win)
+            {
+                game.AddWin(userID);
+                usersManager.IncreaseScore(userID);
+
+                logger.LogInformation($"{userID} is a winner!");
+            }
         }
         private void Validate(byte index, string userID, GameData game)
         {
