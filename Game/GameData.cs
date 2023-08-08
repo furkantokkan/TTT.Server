@@ -66,7 +66,7 @@ namespace TTT.Server
 
         public void AddWin(string winnerUserID)
         {
-            var winnerType = GetPlayerType(winnerUserID);
+            MarkType winnerType = GetPlayerType(winnerUserID);
             if (winnerType == MarkType.X)
             {
                 players[0].PlayerWins++;
@@ -76,7 +76,18 @@ namespace TTT.Server
                 players[1].PlayerWins++;
             }
         }
-
+        public void SetRematchState(string userID)
+        {
+            MarkType playerType = GetPlayerType(userID);
+            if (playerType == MarkType.X)
+            {
+                players[0].PlayerWantsRematch = true;
+            }
+            else
+            {
+                players[1].PlayerWantsRematch = true;
+            }
+        }
 
         #region CheckForWin
         public MarkResult MarkCell(byte index)

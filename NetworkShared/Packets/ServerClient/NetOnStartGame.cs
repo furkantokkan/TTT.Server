@@ -3,10 +3,8 @@ using NetworkShared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
-using TTT.Server.Data;
 
 namespace TTT.Server.NetworkShared.Packets.ServerClient
 {
@@ -23,6 +21,7 @@ namespace TTT.Server.NetworkShared.Packets.ServerClient
         public void Deserialize(NetDataReader reader)
         {
             PlayersCount = reader.GetUShort();
+            PlayerData = new PlayerData[PlayersCount];
             for (int i = 0; i < PlayersCount; i++)
             {
                 PlayerData[i] = reader.Get<PlayerData>();
