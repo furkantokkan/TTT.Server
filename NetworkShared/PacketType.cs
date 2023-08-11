@@ -15,6 +15,8 @@ namespace NetworkShared
         MarkCellRequest = 5,
         PlayAgainRequest = 6,
         AcceptPlayAgainRequest = 7,
+        SurrenderRequest = 8,
+        QuitGameRequest = 9,
         #endregion
 
         #region ServerClient
@@ -25,8 +27,9 @@ namespace NetworkShared
         OnStartGame = 104,
         OnMarkCell = 105,
         OnPlayAgain = 106,
-        OnNewRound = 107
+        OnNewRound = 107,
+        OnSurrender = 108,
+        OnQuitGame = 109
         #endregion
     }
 }
-
