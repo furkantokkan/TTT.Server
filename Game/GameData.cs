@@ -88,6 +88,27 @@ namespace TTT.Server
                 players[1].PlayerWantsRematch = true;
             }
         }
+        public bool BothPlayersAreReady()
+        {
+            return players[0].PlayerWantsRematch && players[1].PlayerWantsRematch;
+        }
+        public void NewRound()
+        {
+            CurrentRoundStartTime = DateTime.UtcNow;
+            ResetGrid();
+            CurrentUser = players[0].Player;
+        }
+
+        private void ResetGrid()
+        {
+            for (int row = 0; row < GRID_SIZE; row++)
+            {
+                for (int col = 0; col < GRID_SIZE; col++)
+                {
+                    Grid[row, col] = 0;
+                }
+            }
+        }
 
         #region CheckForWin
         public MarkResult MarkCell(byte index)
